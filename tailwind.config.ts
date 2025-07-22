@@ -19,6 +19,12 @@ export default {
 		},
 		extend: {
 			colors: {
+				hiphop: {
+					black: '#000000',
+					blue: '#1E40AF',
+					purple: '#8B5CF6',
+					white: '#FFFFFF'
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -84,11 +90,21 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'flip-card': {
+					from: { transform: 'rotateY(0deg)' },
+					to: { transform: 'rotateY(180deg)' }
+				},
+				'flip-card-back': {
+					from: { transform: 'rotateY(-180deg)' },
+					to: { transform: 'rotateY(0deg)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'flip': 'flip-card 0.8s ease-in-out',
+				'flip-back': 'flip-card-back 0.8s ease-in-out'
 			}
 		}
 	},

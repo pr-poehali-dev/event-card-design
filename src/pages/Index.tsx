@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 interface Event {
   id: number;
@@ -19,16 +17,16 @@ interface Event {
 const EventCard = ({ event }: { event: Event }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   
-  const typeColors = {
-    concert: 'bg-hiphop-blue',
-    performance: 'bg-hiphop-purple', 
-    camp: 'bg-gradient-to-r from-hiphop-blue to-hiphop-purple'
-  };
-
   const typeIcons = {
     concert: 'Music',
     performance: 'Users',
     camp: 'Mountain'
+  };
+
+  const eventImages = {
+    concert: '/img/b60eaf52-1ffd-48e8-bef9-3ceb6441e155.jpg',
+    performance: '/img/49f8c593-62f7-4208-a5c2-45ed92dc1921.jpg',
+    camp: '/img/94df1f4f-9dee-4c6d-91eb-42c51948684d.jpg'
   };
 
   return (
@@ -37,78 +35,89 @@ const EventCard = ({ event }: { event: Event }) => {
         className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''}`}
         onClick={() => setIsFlipped(!isFlipped)}
       >
-        {/* Front of card */}
-        <div className={`absolute inset-0 w-full h-full backface-hidden ${typeColors[event.type]} transform skew-x-[-12deg] origin-bottom-left shadow-lg hover:shadow-xl transition-shadow duration-300`}>
-          <div className="h-full flex flex-col justify-between p-6 text-white transform skew-x-[12deg]">
-            <div className="flex justify-between items-start">
-              <Badge variant="secondary" className="bg-white/20 text-white border-0">
-                <Icon name={typeIcons[event.type]} size={16} className="mr-1" />
-                {event.type === 'concert' ? 'Концерт' : event.type === 'performance' ? 'Выступление' : 'Лагерь'}
-              </Badge>
-              <Icon name="Calendar" size={20} className="text-white/80" />
-            </div>
-            
-            <div>
-              <h3 className="text-2xl font-bold mb-2 leading-tight">{event.title}</h3>
-              <div className="space-y-1 text-white/90">
-                <div className="flex items-center">
-                  <Icon name="Calendar" size={16} className="mr-2" />
-                  <span className="text-sm">{event.date}</span>
+        {/* Front of card - с картинкой */}
+        <div className="absolute inset-0 w-full h-full backface-hidden transform skew-x-[-12deg] origin-bottom-left shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          <div 
+            className="h-full w-full bg-cover bg-center relative"
+            style={{ backgroundImage: `url(${eventImages[event.type]})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transform skew-x-[12deg]">
+              <div className="h-full flex flex-col justify-between p-6 text-white transform skew-x-[-12deg]">
+                <div className="flex justify-between items-start">
+                  <Badge variant="secondary" className="bg-black/40 text-white border-0 backdrop-blur-sm">
+                    <Icon name={typeIcons[event.type]} size={16} className="mr-1" />
+                    {event.type === 'concert' ? 'Концерт' : event.type === 'performance' ? 'Выступление' : 'Лагерь'}
+                  </Badge>
+                  <div className="text-xs text-white/70 bg-black/40 px-2 py-1 rounded backdrop-blur-sm">
+                    Подробнее →
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Icon name="Clock" size={16} className="mr-2" />
-                  <span className="text-sm">{event.time}</span>
-                </div>
-                <div className="flex items-center">
-                  <Icon name="MapPin" size={16} className="mr-2" />
-                  <span className="text-sm">{event.location}</span>
+                
+                <div>
+                  <h3 className="text-2xl font-bold mb-3 leading-tight drop-shadow-lg">{event.title}</h3>
+                  <div className="space-y-1 text-white/90">
+                    <div className="flex items-center">
+                      <Icon name="Calendar" size={16} className="mr-2" />
+                      <span className="text-sm drop-shadow">{event.date}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Icon name="Clock" size={16} className="mr-2" />
+                      <span className="text-sm drop-shadow">{event.time}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="text-xs text-white/70 text-right">
-              Нажми для подробностей →
             </div>
           </div>
         </div>
 
-        {/* Back of card */}
-        <div className={`absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-black transform skew-x-[-12deg] origin-bottom-left shadow-lg`}>
+        {/* Back of card - только информация */}
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-black transform skew-x-[-12deg] origin-bottom-left shadow-lg border border-hiphop-purple/30">
           <div className="h-full flex flex-col justify-between p-6 text-white transform skew-x-[12deg]">
             <div>
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-xl font-bold">{event.title}</h3>
+                <h3 className="text-xl font-bold text-hiphop-purple">{event.title}</h3>
                 <Icon name="ArrowLeft" size={20} className="text-white/60" />
               </div>
               
-              <div className="space-y-3 text-sm">
+              <div className="space-y-4 text-sm">
                 <p className="text-white/90 leading-relaxed">{event.description}</p>
                 
-                {event.price && (
+                <div className="space-y-2">
                   <div className="flex items-center">
-                    <Icon name="CreditCard" size={16} className="mr-2 text-hiphop-purple" />
-                    <span>Цена: {event.price}</span>
+                    <Icon name="MapPin" size={16} className="mr-2 text-hiphop-blue" />
+                    <span>Место: {event.location}</span>
                   </div>
-                )}
-                
-                {event.capacity && (
+                  
                   <div className="flex items-center">
-                    <Icon name="Users" size={16} className="mr-2 text-hiphop-blue" />
-                    <span>Мест: {event.capacity}</span>
+                    <Icon name="Calendar" size={16} className="mr-2 text-hiphop-blue" />
+                    <span>Дата: {event.date}</span>
                   </div>
-                )}
+                  
+                  <div className="flex items-center">
+                    <Icon name="Clock" size={16} className="mr-2 text-hiphop-blue" />
+                    <span>Время: {event.time}</span>
+                  </div>
+                  
+                  {event.price && (
+                    <div className="flex items-center">
+                      <Icon name="CreditCard" size={16} className="mr-2 text-hiphop-purple" />
+                      <span>Цена: {event.price}</span>
+                    </div>
+                  )}
+                  
+                  {event.capacity && (
+                    <div className="flex items-center">
+                      <Icon name="Users" size={16} className="mr-2 text-hiphop-purple" />
+                      <span>Мест: {event.capacity}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Button className="w-full bg-hiphop-purple hover:bg-hiphop-purple/80 text-white">
-                <Icon name="Ticket" size={16} className="mr-2" />
-                Купить билет
-              </Button>
-              <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
-                <Icon name="Share2" size={16} className="mr-2" />
-                Поделиться
-              </Button>
+            <div className="text-center text-xs text-white/50 pt-4 border-t border-white/10">
+              Информация о событии
             </div>
           </div>
         </div>
@@ -199,14 +208,14 @@ const Index = () => {
             Подписывайся на обновления и не пропускай самые горячие события
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-hiphop-purple hover:bg-hiphop-purple/80">
+            <button className="px-6 py-3 bg-hiphop-purple hover:bg-hiphop-purple/80 rounded-lg font-medium transition-colors flex items-center justify-center">
               <Icon name="Bell" size={20} className="mr-2" />
               Подписаться на уведомления
-            </Button>
-            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+            </button>
+            <button className="px-6 py-3 border border-white/30 text-white hover:bg-white/10 rounded-lg font-medium transition-colors flex items-center justify-center">
               <Icon name="Instagram" size={20} className="mr-2" />
               Следить в Instagram
-            </Button>
+            </button>
           </div>
         </div>
       </div>

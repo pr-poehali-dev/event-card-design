@@ -35,89 +35,63 @@ const EventCard = ({ event }: { event: Event }) => {
         className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''}`}
         onClick={() => setIsFlipped(!isFlipped)}
       >
-        {/* Front of card - с картинкой */}
+        {/* Front of card - только картинка */}
         <div className="absolute inset-0 w-full h-full backface-hidden transform skew-x-[-12deg] origin-bottom-left shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
           <div 
-            className="h-full w-full bg-cover bg-center relative"
+            className="h-full w-full bg-cover bg-center"
             style={{ backgroundImage: `url(${eventImages[event.type]})` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transform skew-x-[12deg]">
-              <div className="h-full flex flex-col justify-between p-6 text-white transform skew-x-[-12deg]">
-                <div className="flex justify-between items-start">
-                  <Badge variant="secondary" className="bg-black/40 text-white border-0 backdrop-blur-sm">
-                    <Icon name={typeIcons[event.type]} size={16} className="mr-1" />
-                    {event.type === 'concert' ? 'Концерт' : event.type === 'performance' ? 'Выступление' : 'Лагерь'}
-                  </Badge>
-                  <div className="text-xs text-white/70 bg-black/40 px-2 py-1 rounded backdrop-blur-sm">
-                    Подробнее →
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-2xl font-bold mb-3 leading-tight drop-shadow-lg">{event.title}</h3>
-                  <div className="space-y-1 text-white/90">
-                    <div className="flex items-center">
-                      <Icon name="Calendar" size={16} className="mr-2" />
-                      <span className="text-sm drop-shadow">{event.date}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Icon name="Clock" size={16} className="mr-2" />
-                      <span className="text-sm drop-shadow">{event.time}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Back of card - только информация */}
+        {/* Back of card - вся информация */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-black transform skew-x-[-12deg] origin-bottom-left shadow-lg border border-hiphop-purple/30">
           <div className="h-full flex flex-col justify-between p-6 text-white transform skew-x-[12deg]">
             <div>
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-xl font-bold text-hiphop-purple">{event.title}</h3>
+                <Badge variant="secondary" className="bg-hiphop-purple/20 text-hiphop-purple border-0">
+                  <Icon name={typeIcons[event.type]} size={16} className="mr-1" />
+                  {event.type === 'concert' ? 'Концерт' : event.type === 'performance' ? 'Выступление' : 'Лагерь'}
+                </Badge>
                 <Icon name="ArrowLeft" size={20} className="text-white/60" />
               </div>
+              
+              <h3 className="text-2xl font-bold mb-4 text-hiphop-purple">{event.title}</h3>
               
               <div className="space-y-4 text-sm">
                 <p className="text-white/90 leading-relaxed">{event.description}</p>
                 
-                <div className="space-y-2">
+                <div className="space-y-3 border-t border-white/10 pt-4">
                   <div className="flex items-center">
-                    <Icon name="MapPin" size={16} className="mr-2 text-hiphop-blue" />
-                    <span>Место: {event.location}</span>
+                    <Icon name="Calendar" size={18} className="mr-3 text-hiphop-blue" />
+                    <span className="font-medium">Дата: {event.date}</span>
                   </div>
                   
                   <div className="flex items-center">
-                    <Icon name="Calendar" size={16} className="mr-2 text-hiphop-blue" />
-                    <span>Дата: {event.date}</span>
+                    <Icon name="Clock" size={18} className="mr-3 text-hiphop-blue" />
+                    <span className="font-medium">Время: {event.time}</span>
                   </div>
                   
                   <div className="flex items-center">
-                    <Icon name="Clock" size={16} className="mr-2 text-hiphop-blue" />
-                    <span>Время: {event.time}</span>
+                    <Icon name="MapPin" size={18} className="mr-3 text-hiphop-blue" />
+                    <span className="font-medium">Место: {event.location}</span>
                   </div>
                   
                   {event.price && (
                     <div className="flex items-center">
-                      <Icon name="CreditCard" size={16} className="mr-2 text-hiphop-purple" />
-                      <span>Цена: {event.price}</span>
+                      <Icon name="CreditCard" size={18} className="mr-3 text-hiphop-purple" />
+                      <span className="font-medium">Цена: {event.price}</span>
                     </div>
                   )}
                   
                   {event.capacity && (
                     <div className="flex items-center">
-                      <Icon name="Users" size={16} className="mr-2 text-hiphop-purple" />
-                      <span>Мест: {event.capacity}</span>
+                      <Icon name="Users" size={18} className="mr-3 text-hiphop-purple" />
+                      <span className="font-medium">Мест: {event.capacity}</span>
                     </div>
                   )}
                 </div>
               </div>
-            </div>
-
-            <div className="text-center text-xs text-white/50 pt-4 border-t border-white/10">
-              Информация о событии
             </div>
           </div>
         </div>
